@@ -1,6 +1,7 @@
 import "dotenv/config";
 
 import { randomBytes } from "node:crypto";
+import { PrismaLibSQL } from "@prisma/adapter-libsql";
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 
 import { PrismaClient } from "../generated/prisma";
@@ -16,10 +17,14 @@ function createTemporaryPassword() {
 }
 
 async function main() {
+  const tursoUrl =
+    process.env.TURSO_DATABASE_URL ?? process.env["scbsedu_TURSO_DATABASE_URL"];
+  const tursoAuthToken =
+    process.env.TURSO_AUTH_TOKEN ?? process.env["scbsedu_TURSO_AUTH_TOKEN"];
   const databaseUrl = process.env.DATABASE_URL;
 
-  if (!databaseUrl) {
-    throw new Error("DATABASE_URL is not set.");
+  if (!tursoUrl && !databaseUrl) {
+    throw new Error("TURSO_DATABASE_URL or DATABASE_URL is not set.");
   }
 
   const rawIdentifier = process.argv[2];
@@ -31,16 +36,19 @@ async function main() {
 
   const identifier = normalizeIdentifier(rawIdentifier);
   const prisma = new PrismaClient({
-    adapter: new PrismaBetterSqlite3({
-      url: databaseUrl,
-    }),
+    adapter: tursoUrl
+      ? new PrismaLibSQL({
+          url: tursoUrl,
+          authToken: tursoAuthToken,
+        })
+      : new PrismaBetterSqlite3({
+          url: databaseUrl!,
+        }),
   });
 
   try {
     const user = await prisma.user.findFirst({
-      where: identifier.includes("@")
-        ? { email: identifier }
-        : { username: identifier },
+      where: identifier.includes("@") ? { email: identifier } : { username: identifier },
       select: {
         id: true,
         username: true,
@@ -67,12 +75,18 @@ async function main() {
       },
     });
 
-    console.log(JSON.stringify({
-      username: user.username,
-      email: user.email,
-      password: nextPassword,
-      sessionsCleared: true,
-    }, null, 2));
+    console.log(
+      JSON.stringify(
+        {
+          username: user.username,
+          email: user.email,
+          password: nextPassword,
+          sessionsCleared: true,
+        },
+        null,
+        2,
+      ),
+    );
   } finally {
     await prisma.$disconnect();
   }

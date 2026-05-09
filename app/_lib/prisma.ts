@@ -1,3 +1,4 @@
+import { PrismaLibSQL } from "@prisma/adapter-libsql";
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import { PrismaClient } from "@/generated/prisma";
 
@@ -5,15 +6,24 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
+const tursoUrl =
+  process.env.TURSO_DATABASE_URL ?? process.env["scbsedu_TURSO_DATABASE_URL"];
+const tursoAuthToken =
+  process.env.TURSO_AUTH_TOKEN ?? process.env["scbsedu_TURSO_AUTH_TOKEN"];
 const databaseUrl = process.env.DATABASE_URL;
 
-if (!databaseUrl) {
-  throw new Error("DATABASE_URL tanımlı değil.");
+if (!tursoUrl && !databaseUrl) {
+  throw new Error("TURSO_DATABASE_URL veya DATABASE_URL tanımlı değil.");
 }
 
-const adapter = new PrismaBetterSqlite3({
-  url: databaseUrl,
-});
+const adapter = tursoUrl
+  ? new PrismaLibSQL({
+      url: tursoUrl,
+      authToken: tursoAuthToken,
+    })
+  : new PrismaBetterSqlite3({
+      url: databaseUrl!,
+    });
 
 function createPrismaClient() {
   return new PrismaClient({
