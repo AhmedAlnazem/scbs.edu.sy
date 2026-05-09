@@ -1,26 +1,362 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "itf Qomra Arabic";
+  src: url("/webFonts/itfQomraArabic-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "itf Qomra Arabic";
+  src: url("/webFonts/itfQomraArabic-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "itf Qomra Arabic";
+  src: url("/webFonts/itfQomraArabic-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f4efe7;
+  --foreground: #1c1a18;
+  --surface: rgba(255, 252, 247, 0.88);
+  --surface-strong: #fffaf2;
+  --line: rgba(76, 60, 42, 0.14);
+  --accent: #a3472d;
+  --accent-strong: #772d1a;
+  --muted: #6a6259;
+  --shadow: 0 18px 60px rgba(79, 42, 22, 0.12);
+  --green1: #427f77;
+  --green2: #094239;
+  --green3: #002623;
+  --control-bg: linear-gradient(180deg, #0f5148 0%, #094239 55%, #002623 100%);
+  --control-border: rgba(0, 38, 35, 0.58);
+  --control-text: #f7f3ea;
+  --control-placeholder: rgba(247, 243, 234, 0.74);
+  --control-shadow: 0 12px 24px rgba(0, 38, 35, 0.22);
+  --main1: var(--green2);
+  --main2: #eeeeee;
+  --main3: #988561;
+  --font-sans:
+    "itf Qomra Arabic", "Tajawal", "Segoe UI", Tahoma, "Noto Sans Arabic",
+    "Helvetica Neue", Arial, sans-serif;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  direction: rtl;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-image:
+    radial-gradient(circle at top left, rgba(214, 111, 73, 0.18), transparent 30%),
+    radial-gradient(circle at top right, rgba(56, 106, 92, 0.16), transparent 28%),
+    linear-gradient(180deg, #f8f3eb 0%, #f1e7d9 100%);
+  font-family: var(--font-sans);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(163, 71, 45, 0.2);
+}
+
+.themeButton {
+  border: 1px solid var(--control-border);
+  background: var(--control-bg);
+  color: var(--control-text);
+  box-shadow: var(--control-shadow);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.themeButton:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+}
+
+.themeButton:focus-visible,
+.themeInput:focus-visible {
+  outline: 2px solid rgba(66, 127, 119, 0.5);
+  outline-offset: 3px;
+}
+
+.themeInput {
+  border: 1px solid var(--control-border);
+  background: var(--control-bg);
+  color: var(--control-text);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.themeInput::placeholder {
+  color: var(--control-placeholder);
+}
+
+.themeInput option {
+  background: var(--green3);
+  color: var(--control-text);
+}
+
+.pwaInstallButton {
+  position: fixed;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 1000;
+  min-height: 48px;
+  padding: 0 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--control-border);
+  background: var(--control-bg);
+  color: var(--control-text);
+  box-shadow: var(--control-shadow);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.pwaInstallButton:hover {
+  transform: translateY(-1px);
+}
+
+.siteFooter {
+  margin-top: auto;
+  position: relative;
+  padding: 3.5rem 1rem 1.4rem;
+  background:
+    linear-gradient(180deg, rgba(244, 239, 231, 0) 0%, rgba(244, 239, 231, 0.35) 12%, rgba(0, 38, 35, 0.06) 12%, rgba(0, 38, 35, 0.06) 100%);
+}
+
+.siteFooter::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 180px;
+  background:
+    linear-gradient(180deg, rgba(244, 239, 231, 0), rgba(244, 239, 231, 0.85)),
+    radial-gradient(circle at 15% 30%, rgba(66, 127, 119, 0.18), transparent 32%),
+    radial-gradient(circle at 85% 10%, rgba(163, 71, 45, 0.16), transparent 28%);
+  pointer-events: none;
+}
+
+.siteFooterInner {
+  position: relative;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: clamp(1.6rem, 2.5vw, 2.5rem);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 36px 36px 22px 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0)),
+    radial-gradient(circle at top right, rgba(66, 127, 119, 0.22), transparent 24%),
+    radial-gradient(circle at bottom left, rgba(163, 71, 45, 0.16), transparent 24%),
+    linear-gradient(135deg, #123f39 0%, #0a302b 55%, #001d1b 100%);
+  box-shadow: 0 28px 56px rgba(0, 38, 35, 0.2);
+  overflow: hidden;
+}
+
+.siteFooterInner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06), transparent 34%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 36px,
+      rgba(255, 255, 255, 0.035) 36px,
+      rgba(255, 255, 255, 0.035) 37px
+    );
+  pointer-events: none;
+}
+
+.siteFooterGrid,
+.siteFooterBottom {
+  position: relative;
+  z-index: 1;
+}
+
+.siteFooterGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(220px, 0.7fr) minmax(220px, 0.7fr);
+  gap: 1.25rem;
+}
+
+.siteFooterKicker {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.42rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.08);
+  color: #f6efe3;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.siteFooterTitle {
+  margin-top: 1rem;
+  color: #fff7ec;
+  font-size: clamp(1.5rem, 1.2vw + 1.1rem, 2.3rem);
+  line-height: 1.16;
+  max-width: 18ch;
+}
+
+.siteFooterText {
+  margin-top: 0.8rem;
+  max-width: 44rem;
+  color: rgba(247, 243, 234, 0.78);
+  line-height: 1.9;
+}
+
+.siteFooterStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.siteFooterStat {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 120px;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+.siteFooterStat strong {
+  color: #fff7ec;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.siteFooterStat span {
+  color: rgba(247, 243, 234, 0.72);
+  font-size: 0.88rem;
+}
+
+.siteFooterColumn {
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+}
+
+.siteFooterColumnTitle {
+  color: #fff7ec;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.siteFooterLinks {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 0.9rem;
+}
+
+.siteFooterLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f6efe3;
+  font-size: 0.92rem;
+  font-weight: 700;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.siteFooterLink:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.siteFooterBottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.siteFooterMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  color: rgba(247, 243, 234, 0.68);
+  font-size: 0.9rem;
+}
+
+.siteFooterCopyright {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem 0.85rem;
+  color: rgba(247, 243, 234, 0.76);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+@media only screen and (max-width: 640px) {
+  .siteFooter {
+    padding-inline: 0.9rem;
+  }
+
+  .siteFooterGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .siteFooterTitle {
+    max-width: none;
+  }
+
+  .siteFooterBottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

@@ -1,0 +1,408 @@
+.page {
+  min-height: 100vh;
+  background: var(--main2);
+  color: #444;
+  font-family: var(--font-sans);
+  padding-bottom: 2rem;
+}
+
+.newnavbar {
+  position: relative;
+  display: flex;
+  width: 100%;
+  background: #f8f6f1;
+  overflow: hidden;
+}
+
+.newnavbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='140' viewBox='0 0 240 140'%3E%3Cg fill='none' stroke='%23ddd5c5' stroke-width='1.5' opacity='0.55'%3E%3Cpath d='M40 20l18 10v20L40 60 22 50V30z'/%3E%3Cpath d='M76 6l18 10v20L76 46 58 36V16z'/%3E%3Cpath d='M112 20l18 10v20l-18 10-18-10V30z'/%3E%3Cpath d='M148 6l18 10v20l-18 10-18-10V16z'/%3E%3Cpath d='M184 20l18 10v20l-18 10-18-10V30z'/%3E%3Cpath d='M58 50l18 10v20L58 90 40 80V60z'/%3E%3Cpath d='M94 64l18 10v20l-18 10-18-10V74z'/%3E%3Cpath d='M130 50l18 10v20l-18 10-18-10V60z'/%3E%3Cpath d='M166 64l18 10v20l-18 10-18-10V74z'/%3E%3Cpath d='M202 50l18 10v20l-18 10-18-10V60z'/%3E%3Cpath d='M94 36l18-10 18 10-18 10z'/%3E%3Cpath d='M166 36l18-10 18 10-18 10z'/%3E%3Cpath d='M76 76l18-10 18 10-18 10z'/%3E%3Cpath d='M148 76l18-10 18 10-18 10z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 220px 128px;
+  background-repeat: repeat;
+  background-position: center;
+  opacity: 0.82;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.navInner {
+  width: 100%;
+  max-width: 1440px;
+  min-height: 122px;
+  margin-inline: auto;
+  padding: 0.75rem clamp(1rem, 2.8vw, 2.5rem);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+.navInner > * {
+  width: 100%;
+}
+
+.navMenu {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 0.5rem 0 0.75rem;
+  order: 2;
+}
+
+.brandBlock {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.3rem;
+  text-align: center;
+  padding: 0.75rem 0;
+  order: 1;
+}
+
+.brandTitle {
+  color: var(--main1);
+  font-size: clamp(1.35rem, 0.55vw + 1.2rem, 1.85rem);
+  line-height: 1.12;
+  font-weight: 700;
+}
+
+.brandSubtitle {
+  font-size: clamp(0.92rem, 0.2vw + 0.9rem, 1.08rem);
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+.navLink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #444;
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.5;
+  padding-bottom: 0.5rem;
+  transition: color 0.25s ease;
+}
+
+.navLink::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--main3);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease;
+}
+
+.navLink:hover,
+.navLinkActive {
+  color: var(--main1);
+}
+
+.navLink:hover::after,
+.navLinkActive::after {
+  transform: scaleX(1);
+}
+
+.actionSlot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0 0.75rem;
+  order: 3;
+}
+
+.loginLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 52px;
+  padding: 0 1.75rem;
+  border: 1px solid var(--control-border);
+  border-radius: 999px;
+  background: var(--control-bg);
+  color: var(--control-text);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  box-shadow: var(--control-shadow);
+}
+
+.loginIcon {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+}
+
+.loginIcon::before,
+.loginIcon::after {
+  content: "";
+  position: absolute;
+}
+
+.loginIcon::before {
+  inset: 2px 3px 2px 5px;
+  border: 1.6px solid currentColor;
+  border-left: 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.loginIcon::after {
+  top: 6px;
+  left: 1px;
+  width: 8px;
+  height: 8px;
+  border-top: 1.6px solid currentColor;
+  border-right: 1.6px solid currentColor;
+  transform: rotate(45deg);
+}
+
+.sectionBlock {
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: 2rem clamp(1rem, 3vw, 2.5rem) 0;
+}
+
+.sectionHeader {
+  max-width: 760px;
+}
+
+.sectionKicker {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.38rem 0.72rem;
+  background: #efe4cf;
+  color: var(--green3);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.sectionTitle {
+  margin-top: 1rem;
+  color: var(--green3);
+  font-size: clamp(1.9rem, 2.6vw, 3.4rem);
+  line-height: 1.08;
+}
+
+.sectionText {
+  margin-top: 0.85rem;
+  color: rgba(0, 38, 35, 0.72);
+  font-size: 1.05rem;
+  line-height: 1.9;
+}
+
+.topActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: 1.15rem;
+}
+
+.topMeta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 0.95rem;
+  background: #efe4cf;
+  color: var(--green3);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.emptyWrap {
+  margin-top: 1.6rem;
+}
+
+.postsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.6rem;
+}
+
+.postCard {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 1rem;
+  aspect-ratio: 1 / 1;
+  position: relative;
+  padding: 1.25rem;
+  border: 1px solid rgba(0, 38, 35, 0.08);
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.08), transparent 26%),
+    linear-gradient(135deg, #1b5a52 0%, #0b3f38 100%);
+  box-shadow: 0 14px 28px rgba(0, 38, 35, 0.06);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.postCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08), transparent 32%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 42px,
+      rgba(255, 255, 255, 0.06) 42px,
+      rgba(255, 255, 255, 0.06) 44px
+    );
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.postCard > * {
+  position: relative;
+  z-index: 1;
+}
+
+.postCard:hover {
+  transform: translateY(-2px);
+  border-color: rgba(163, 71, 45, 0.26);
+  box-shadow: 0 18px 34px rgba(0, 38, 35, 0.1);
+}
+
+.postTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.postType,
+.postDate {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 0.8rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.postType {
+  background: #efe4cf;
+  color: var(--green3);
+}
+
+.postDate {
+  background: rgba(239, 228, 207, 0.18);
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.postMiddle {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.postTitle {
+  color: #fff;
+  font-size: 1.32rem;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.postExcerpt {
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.85;
+  font-size: 0.96rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+
+.postBottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.postMeta,
+.postMetaWide {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 0.75rem;
+  background: #efe4cf;
+  color: var(--green3);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.postMetaWide {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media only screen and (min-width: 991px) {
+  .navInner > * {
+    width: calc(100% / 3);
+    flex-grow: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .navMenu {
+    justify-content: flex-start;
+    padding: 0;
+    order: 1;
+  }
+
+  .brandBlock {
+    order: 2;
+  }
+
+  .actionSlot {
+    justify-content: flex-end;
+    padding: 0;
+    order: 3;
+  }
+}
+
+@media only screen and (max-width: 1100px) {
+  .postsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  .navInner {
+    padding-inline: 1rem;
+  }
+
+  .sectionBlock {
+    padding-top: 2rem;
+  }
+
+  .postsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .postCard {
+    aspect-ratio: auto;
+    min-height: 320px;
+  }
+}
