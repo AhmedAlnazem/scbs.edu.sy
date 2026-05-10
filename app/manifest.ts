@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "منصة المدرسة",
-    short_name: "المدرسة",
+    name: "منصه مدرسه الحاسوب للبنين في سرمدا",
+    short_name: "مدرسه الحاسوب",
     description: "منصة مدرسية للنشر والبحوث ومشاركة الأكواد",
     start_url: "/",
     scope: "/",

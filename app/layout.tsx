@@ -5,9 +5,9 @@ import { SiteFooter } from "@/app/_components/site-footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "منصة المدرسة",
+  title: "منصه مدرسه الحاسوب للبنين في سرمدا",
   description: "منصة مدرسية للنشر والبحوث ومشاركة الأكواد",
-  applicationName: "منصة المدرسة",
+  applicationName: "منصه مدرسه الحاسوب للبنين في سرمدا",
 };
 
 export default function RootLayout({

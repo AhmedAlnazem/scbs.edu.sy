@@ -55,7 +55,7 @@ export function AppFrame({
         <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="space-y-2">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--accent)]">
-              منصة المدرسة
+              منصه مدرسه الحاسوب للبنين في سرمدا
             </p>
             <h1 className="text-2xl font-semibold tracking-tight text-[var(--foreground)] sm:text-3xl">
               منصة المحتوى والأبحاث والأكواد

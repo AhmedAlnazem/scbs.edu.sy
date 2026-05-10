@@ -6,7 +6,6 @@ import { postTypeLabels } from "@/app/_lib/labels";
 import { listPublishedPosts } from "@/app/_lib/posts";
 import { getCurrentUser } from "@/app/_lib/session";
 import { HomeAccountMenu } from "@/app/components/HomeAccountMenu";
-import HeroSlider from "@/app/components/HeroSlider";
 import styles from "./page.module.css";
 
 const navItems = [
@@ -269,8 +268,6 @@ export default async function Home(): Promise<React.JSX.Element> {
           </div>
         </div>
       </section>
-
-      <HeroSlider />
     </main>
   );
 }
