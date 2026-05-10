@@ -1,7 +1,7 @@
 import "dotenv/config";
 
 import { randomBytes } from "node:crypto";
-import { PrismaLibSQL } from "@prisma/adapter-libsql";
+import { PrismaLibSql } from "@prisma/adapter-libsql";
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 
 import { PrismaClient } from "../generated/prisma";
@@ -37,7 +37,7 @@ async function main() {
   const identifier = normalizeIdentifier(rawIdentifier);
   const prisma = new PrismaClient({
     adapter: tursoUrl
-      ? new PrismaLibSQL({
+      ? new PrismaLibSql({
           url: tursoUrl,
           authToken: tursoAuthToken,
         })
