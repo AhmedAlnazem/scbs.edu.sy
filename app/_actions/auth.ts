@@ -16,11 +16,13 @@ import { prisma } from "@/app/_lib/prisma";
 
 export type AuthActionState = {
   fieldErrors?: {
+    mode?: string;
     name?: string;
     studentClass?: string;
     identifier?: string;
     email?: string;
     password?: string;
+    registrationKey?: string;
     recoveryKey?: string;
     confirmPassword?: string;
   };
@@ -106,6 +108,14 @@ function validateLoginMode(mode: string) {
   return "student";
 }
 
+function validateRegisterMode(mode: string) {
+  if (mode === "student" || mode === "teacher") {
+    return mode;
+  }
+
+  return "student";
+}
+
 function validateEmail(email: string) {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizeEmail(email))) {
     return "Enter a valid email address.";
@@ -181,14 +191,18 @@ export async function registerAction(
   _state: AuthActionState,
   formData: FormData,
 ): Promise<AuthActionState> {
+  const mode = validateRegisterMode(readText(formData, "mode"));
   const name = readText(formData, "name");
   const studentClass = readText(formData, "studentClass");
   const email = readText(formData, "email");
   const password = readText(formData, "password");
+  const registrationKey = readText(formData, "registrationKey");
+  const configuredTeacherRegistrationKey = process.env.TEACHER_REGISTRATION_KEY?.trim();
+  const isTeacherRegistration = mode === "teacher";
 
   const fieldErrors: NonNullable<AuthActionState>["fieldErrors"] = {};
   const nameError = validateName(name);
-  const studentClassError = validateStudentClass(studentClass);
+  const studentClassError = isTeacherRegistration ? null : validateStudentClass(studentClass);
   const emailError = validateEmail(email);
   const passwordError = validatePassword(password);
 
@@ -208,8 +222,28 @@ export async function registerAction(
     fieldErrors.password = passwordError;
   }
 
+  if (isTeacherRegistration && !registrationKey) {
+    fieldErrors.registrationKey = "Registration key is required.";
+  }
+
   if (Object.keys(fieldErrors).length > 0) {
     return { fieldErrors };
+  }
+
+  if (isTeacherRegistration) {
+    if (!configuredTeacherRegistrationKey) {
+      return {
+        formError: "Teacher registration is not configured yet.",
+      };
+    }
+
+    if (!verifyRecoveryKey(registrationKey, configuredTeacherRegistrationKey)) {
+      return {
+        fieldErrors: {
+          registrationKey: "Registration key is incorrect.",
+        },
+      };
+    }
   }
 
   const normalizedEmail = normalizeEmail(email);
@@ -228,11 +262,11 @@ export async function registerAction(
   const user = await prisma.user.create({
     data: {
       name,
-      studentClass,
+      studentClass: isTeacherRegistration ? null : studentClass,
       username,
       email: normalizedEmail,
       password: await hashPassword(password),
-      role: Role.STUDENT,
+      role: isTeacherRegistration ? Role.TEACHER : Role.STUDENT,
     },
   });
 

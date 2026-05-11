@@ -10,11 +10,16 @@ const initialState: AuthActionState = undefined;
 
 const classOptions = ["الأول الثانوي", "الثاني ثانوي", "الثالث الثانوي"] as const;
 
-export function RegisterForm() {
+type RegisterMode = "student" | "teacher";
+
+export function RegisterForm({ mode }: { mode: RegisterMode }) {
   const [state, formAction, pending] = useActionState(registerAction, initialState);
+  const isTeacher = mode === "teacher";
 
   return (
     <form action={formAction} className={styles.form}>
+      <input name="mode" type="hidden" value={mode} />
+
       <label className={styles.field}>
         <span className={styles.label}>الاسم الكامل</span>
         <input autoComplete="name" className={styles.input} name="name" required type="text" />
@@ -23,22 +28,24 @@ export function RegisterForm() {
         ) : null}
       </label>
 
-      <label className={styles.field}>
-        <span className={styles.label}>الصف</span>
-        <select className={styles.input} defaultValue="" name="studentClass" required>
-          <option disabled value="">
-            اختر الصف
-          </option>
-          {classOptions.map((option) => (
-            <option key={option} value={option}>
-              {option}
+      {!isTeacher ? (
+        <label className={styles.field}>
+          <span className={styles.label}>الصف</span>
+          <select className={styles.input} defaultValue="" name="studentClass" required>
+            <option disabled value="">
+              اختر الصف
             </option>
-          ))}
-        </select>
-        {state?.fieldErrors?.studentClass ? (
-          <span className={styles.error}>{state.fieldErrors.studentClass}</span>
-        ) : null}
-      </label>
+            {classOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+          {state?.fieldErrors?.studentClass ? (
+            <span className={styles.error}>{state.fieldErrors.studentClass}</span>
+          ) : null}
+        </label>
+      ) : null}
 
       <label className={styles.field}>
         <span className={styles.label}>البريد الإلكتروني</span>
@@ -62,10 +69,26 @@ export function RegisterForm() {
         ) : null}
       </label>
 
+      {isTeacher ? (
+        <label className={styles.field}>
+          <span className={styles.label}>مفتاح تسجيل المعلم</span>
+          <input
+            autoComplete="one-time-code"
+            className={styles.input}
+            name="registrationKey"
+            required
+            type="password"
+          />
+          {state?.fieldErrors?.registrationKey ? (
+            <span className={styles.error}>{state.fieldErrors.registrationKey}</span>
+          ) : null}
+        </label>
+      ) : null}
+
       {state?.formError ? <div className={styles.formError}>{state.formError}</div> : null}
 
       <button className={styles.submitButton} disabled={pending} type="submit">
-        {pending ? "جار إنشاء الحساب..." : "إنشاء الحساب"}
+        {pending ? "جارٍ إنشاء الحساب..." : isTeacher ? "إنشاء حساب معلم" : "إنشاء الحساب"}
       </button>
     </form>
   );

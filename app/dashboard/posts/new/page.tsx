@@ -18,7 +18,7 @@ export default async function DashboardNewPostPage() {
         description="هذه الصفحة جزء من مساحة الإدارة. بعد الحفظ يمكنك عرض المنشور من صفحات العرض العامة."
       />
 
-      <form action={createContentAction} className="mt-8 space-y-5">
+      <form action={createContentAction} className="mt-8 space-y-5" encType="multipart/form-data">
         <PostFormFields
           categories={categories}
           initialValues={{ classLevel: "first-secondary", type: PostType.BLOG }}

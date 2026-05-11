@@ -39,7 +39,7 @@ export default async function DashboardEditPostPage(props: PageProps<"/dashboard
         description="يمكنك تحديث البيانات ثم حفظها كمسودة أو إعادة إرسالها إلى المراجعة."
       />
 
-      <form action={action} className="mt-8 space-y-5">
+      <form action={action} className="mt-8 space-y-5" encType="multipart/form-data">
         <PostFormFields
           categories={categories}
           initialValues={{

@@ -6,7 +6,7 @@ import { PostStatus, PostType, Role } from "@/generated/prisma";
 import { createAuditEntry } from "@/app/_lib/audit";
 import { hashPassword, normalizeEmail } from "@/app/_lib/auth-crypto";
 import { isLibraryGrade, libraryGrades, type LibraryGradeSlug } from "@/app/_lib/library";
-import { splitMediaUrls } from "@/app/_lib/post-media";
+import { readUploadedImage, readUploadedImages, splitMediaUrls } from "@/app/_lib/post-media";
 import { prisma } from "@/app/_lib/prisma";
 import {
   createCategory,
@@ -161,8 +161,8 @@ export async function createContentAction(formData: FormData) {
   const title = readText(formData, "title");
   const excerpt = readText(formData, "excerpt");
   const content = readText(formData, "content");
-  const coverImage = readText(formData, "coverImage");
-  const imageUrls = splitMediaUrls(readText(formData, "imageUrls"));
+  const coverImage = await readUploadedImage(formData, "coverImageFile");
+  const imageUrls = await readUploadedImages(formData, "imageFiles");
   const videoUrls = splitMediaUrls(readText(formData, "videoUrls"));
   const fileUrls = splitMediaUrls(readText(formData, "fileUrls"));
   const classLevel = validateClassLevel(readText(formData, "classLevel"));
@@ -177,7 +177,7 @@ export async function createContentAction(formData: FormData) {
     title,
     excerpt: excerpt || null,
     content,
-    coverImage: coverImage || null,
+    coverImage,
     imageUrls,
     videoUrls,
     fileUrls,
@@ -212,8 +212,12 @@ export async function updateContentAction(postId: string, formData: FormData) {
   const title = readText(formData, "title");
   const excerpt = readText(formData, "excerpt");
   const content = readText(formData, "content");
-  const coverImage = readText(formData, "coverImage");
-  const imageUrls = splitMediaUrls(readText(formData, "imageUrls"));
+  const existingCoverImage = readText(formData, "existingCoverImage");
+  const existingImageUrls = splitMediaUrls(readText(formData, "existingImageUrls"));
+  const removeCoverImage = readText(formData, "removeCoverImage") === "1";
+  const removeExistingImages = readText(formData, "removeExistingImages") === "1";
+  const uploadedCoverImage = await readUploadedImage(formData, "coverImageFile");
+  const uploadedImageUrls = await readUploadedImages(formData, "imageFiles");
   const videoUrls = splitMediaUrls(readText(formData, "videoUrls"));
   const fileUrls = splitMediaUrls(readText(formData, "fileUrls"));
   const classLevel = validateClassLevel(readText(formData, "classLevel"));
@@ -221,6 +225,10 @@ export async function updateContentAction(postId: string, formData: FormData) {
   const tags = readText(formData, "tags");
   const type = validatePostType(readText(formData, "type"));
   const status = validateSubmissionMode(readText(formData, "submitMode"));
+  const coverImage = removeCoverImage ? null : (uploadedCoverImage ?? existingCoverImage ?? null);
+  const imageUrls = removeExistingImages
+    ? uploadedImageUrls
+    : [...existingImageUrls, ...uploadedImageUrls];
 
   validateContentInput(title, excerpt, content);
 
@@ -230,7 +238,7 @@ export async function updateContentAction(postId: string, formData: FormData) {
     title,
     excerpt: excerpt || null,
     content,
-    coverImage: coverImage || null,
+    coverImage,
     imageUrls,
     videoUrls,
     fileUrls,

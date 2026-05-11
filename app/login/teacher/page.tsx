@@ -41,9 +41,9 @@ export default async function TeacherLoginPage({
           </div>
 
           <div className={styles.actionSlot}>
-            <Link className={styles.loginLink} href="/login/student">
+            <Link className={styles.loginLink} href="/register?mode=teacher">
               <span aria-hidden="true" className={styles.loginIcon} />
-              دخول الطالب
+              إنشاء حساب معلم
             </Link>
           </div>
         </div>
@@ -55,8 +55,8 @@ export default async function TeacherLoginPage({
             <span className={styles.eyebrow}>تسجيل دخول المعلم</span>
             <h1 className={styles.title}>دخول المعلمين والإدارة</h1>
             <p className={styles.description}>
-              هذه البوابة مخصصة للمعلمين وحسابات الإدارة وowner. حسابات الطلاب لا يمكنها
-              الدخول من هنا.
+              هذه البوابة مخصصة للمعلمين وحسابات الإدارة والمالك. إذا لم يكن لديك حساب بعد،
+              يمكنك إنشاء حساب معلم باستخدام مفتاح التسجيل المخصص.
             </p>
           </div>
 
